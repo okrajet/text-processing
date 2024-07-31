@@ -24,6 +24,36 @@ from nltk.tokenize import word_tokenize
 
 tokens_list = [word_tokenize(s) for s in sentences]
 #
-# print (Counter([w for x in tokens_list for w in x]).most_common(10))
-print (Counter([w for x in tokens_list for w in x]))
+Counter([w for x in tokens_list for w in x]).most_common(10)
 
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+tokens_stem = [stemmer.stem(w) for x in tokens_list for w in x]
+
+#tokens_stem
+print(Counter(tokens_stem).most_common(10))
+
+#Exercise
+
+from nltk.stem import SnowballStemmer, RegexpStemmer
+
+# stemmer_s = SnowballStemmer()
+# tokens_stem_s = [stemmer_s.stem(w) for x in tokens_list for w in x]
+
+#Lemmatisation
+
+from nltk.stem import WordNetLemmatizer
+
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+nltk.download('averaged_perceptron_tagger')
+tags_list = nltk.pos_tag_sents(tokens_list)
+#tags_list
+
+wordnet_tag = lambda t: 'a' if t == 'j' else (t if t in ['n', 'v', 'r'] else 'n')
+lemmatizer = WordNetLemmatizer()
+tokens_lemma = [lemmatizer.lemmatize(w.lower(), pos=wordnet_tag(t[0].lower())) for x in tags_list for (w, t) in x]
+
+print(Counter(tokens_lemma).most_common(10))
